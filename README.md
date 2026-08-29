@@ -18,9 +18,3 @@ using only what is in this repository.
 
 The exact `run_id` and `git_commit` are tags on the MLflow run and on the
 registered model version.
-
-## S3 setup
-
-AWS Access Key ID     : AKIAVUHK6PDKYL65IKBO
-
-AWS Secret Access Key : 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
