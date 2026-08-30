@@ -18,3 +18,47 @@ using only what is in this repository.
 
 The exact `run_id` and `git_commit` are tags on the MLflow run and on the
 registered model version.
+
+
+---
+
+## Reproduction result (Partner B)
+
+Reproduced 2026-08-30 from a clean clone: `git checkout <commit>`, `dvc pull`, a
+virtualenv from the pinned `requirements.txt`, and a re-run of the notebook.
+
+| | Partner A | Partner B |
+|---|---|---|
+| MLflow run | `661367a005a747b093bbfab6210270d9` | `473ce4225d204c799fadb5bf2d164f29` |
+| Experiment | `mnist-mlp-repro` | `mnist-mlp-repro-partnerB` |
+| **Accuracy** | **0.9771428571428571** | **0.9771428571428571** |
+| **Macro F1** | **0.9769855553603207** | **0.9769855553603207** |
+| Epochs | 16 | 16 |
+| `git_commit` | `daa18752…` | `daa18752…` |
+
+**Verdict: `MATCHED`** — difference `+0.0000` against a tolerance of `±0.005`.
+The runs agree to all sixteen significant figures.
+
+Environment identical on both sides: Python 3.14.4, scikit-learn 1.9.0,
+numpy 2.5.2, mlflow 3.15.2 — logged per run to `run_environment.json`.
+
+Both runs live on Partner A's MLflow server. Partner B's run carries
+`reproduction_verdict` and `reproduction_delta` tags and a `reproduction_note.txt`
+artifact.
+
+### Deviations from the notebook as committed
+
+- **`register_model` not run** — registration is Partner A's step; running it would
+  add a spurious version to the shared registry.
+
+### Proofs
+
+| File | Shows |
+|---|---|
+| `proofs/Reproduction Tags.png` | `reproduction_verdict`, `reproduction_delta`, `git_commit` |
+| `proofs/Reproduction Note.png` | `reproduction_note.txt` in the Artifacts tab |
+| `proofs/Metrics Comparision.png` | Both runs' metrics side by side |
+| `proofs/Parallel Plot.png` | Parameter/metric comparison across runs |
+
+The reference table above quotes `0.9770`; that is the macro-F1. The logged accuracy
+is `0.9771428…`. Partner B compared against the logged value.
