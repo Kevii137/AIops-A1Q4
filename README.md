@@ -4,6 +4,36 @@ A single MLP run on MNIST, versioned end to end: code in Git, data in DVC, metri
 and model in MLflow. Partner B should be able to reproduce the reported accuracy
 using only what is in this repository.
 
+## Where to look — deliverables map
+
+| Deliverable | File |
+|---|---|
+| Training, logging and model-registration notebook | `train_and_register.ipynb` |
+| Dataset fetch script (MNIST → `data/mnist.npz`) | `prepare_data.py` |
+| Data versioned in DVC, not in Git | `data.dvc` + `.dvc/config` → `s3://aiops-kevin-2026/repro-handoff` |
+| Pinned environment | `requirements.txt` |
+| Environment actually used, logged per run | `run_environment.json` |
+| Partner A reference result | [Reference result](#reference-result-partner-a) below |
+| Partner B reproduction + MATCHED verdict | [Reproduction result](#reproduction-result-partner-b) below |
+| MLflow screenshot proofs | `proofs/` (4 images, listed under [Proofs](#proofs)) |
+
+Three-layer versioning: **code → Git** (commit `daa1875`), **data → DVC/S3**, **metrics + model → MLflow**
+(run tags carry `run_id` and `git_commit`; model registered as `mnist-mlp`, stage `Staging`).
+
+## Reproducing this run
+
+```bash
+git clone https://github.com/Kevii137/AIops-A1Q4 && cd AIops-A1Q4
+git checkout daa1875
+python -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+dvc pull                       # restores data/mnist.npz from S3 (needs AWS creds)
+jupyter lab train_and_register.ipynb   # run all; skip the register_model cell
+```
+Compare your accuracy against `0.9771428571428571` with a tolerance of `±0.005`.
+
+---
+
 ## Reference result (Partner A)
 
 | | |
